@@ -67,3 +67,13 @@ app.post('/newTaskFromClient', urlencodedParser, function (req, res) {
     }//end else
   });//end pg connect
 });//end app.post
+
+// ////////////////////Change Task status in DB//////////////////////////////
+// app.post('/changeStatus', urlencodedParser, function (req, res) {
+//   console.log('in .post changeStatus');
+//   console.log('req.body', req.body);
+//   //create variables from req
+//
+//     }//end else
+//   });//end pg connect
+// });//end app.post
