@@ -5,17 +5,18 @@
     <title>Weekend Challenge 04</title>
     <script src="vendors/jquery-3.1.0.min.js" charset="utf-8"></script>
     <script src="scripts/scripts.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="styles.css" media="screen" title="no title">
   </head>
   <body>
-    <h1>Weekend Challenge 04</h1>
+    <h1>Weekend Challenge #4: To-Do List</h1>
     <hr>
     <div id="newTasks">
-      <h4>New Task Name:</h4>
-      <input id="newTaskName" type="text" name="name" placeholder="Task Name">
-      <h4>New Task Description:</h4>
-      <input id="newTaskDescription" type="text" name="name" placeholder="Task Description"> <br><br>
-      <button id="submitNewTask" onclick="addTask()" type="button" name="Submit">Submit</button>
-    </div><br>
+      <h4 class='inputs'>New Task Name:</h4>
+      <input class='inputs'id="newTaskName" type="text" name="name" placeholder="Task Name">
+      <h4 class='inputs' id='taskTitle'>New Task Description:</h4>
+      <input class='inputs'id="newTaskDescription" type="text" name="name" placeholder="Task Description">
+      <button class='inputs'id="submitNewTask" onclick="addTask()" type="button" name="Submit">Submit</button>
+    </div> <br>
     <hr>
 
     <div id='displayTasks'>

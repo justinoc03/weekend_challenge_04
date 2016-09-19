@@ -31,7 +31,7 @@ app.get('/getTasks', function(req,res){
       console.log(err);
     } else {
       var tasksToGet = [];
-      var queryResults = client.query('SELECT task_id, task_name, task_description, task_completed, date(task_start), cast(task_start as time) FROM tasks');
+      var queryResults = client.query('SELECT task_id, task_name, task_description, task_completed, date(task_start), cast(task_start as time) FROM tasks ORDER BY task_completed');
       console.log(queryResults);
       queryResults.on('row', function(row){
         tasksToGet.push(row);

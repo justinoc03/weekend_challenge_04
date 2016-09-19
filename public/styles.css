@@ -1,0 +1,8 @@
+.inputs {
+  display: block;
+  margin: 2px;
+}
+
+#taskTitle, #submitNewTask {
+  margin-top: 10px;
+}

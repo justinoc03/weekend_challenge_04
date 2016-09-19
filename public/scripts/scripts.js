@@ -39,7 +39,7 @@ var displayTasks = function (){
     } else {
       completed = 'Complete!!';
     }
-    allTasks += '<h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Task Status: ' + completed + '</p> </select><select id="toggleStatus"> <option disabled selected>Change Status</option> <option value="true">Complete</option> <option value="false">Incomplete</option></select>  <button id="submitStatus" data=' + tasks[i].task_id + '>Submit</button> <br> <button id="deleteThisTask" data=' + tasks[i].task_id + '>Delete Task</button><hr>';
+    allTasks += '<h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Current Status: ' + completed + '</p> </select><select id="toggleStatus"> <option disabled selected>Change Status</option> <option value="true">Complete</option> <option value="false">Incomplete</option></select>  <button id="submitStatus" data=' + tasks[i].task_id + '>Submit</button> <br> <button id="deleteThisTask" data=' + tasks[i].task_id + '>Delete Task</button><hr>';
 
   }
   $('#displayTasks').html(allTasks);
@@ -75,6 +75,9 @@ var addTask = function () {
   var statusUpdate = function(){
     $('body').on('click', '#submitStatus', function(){
       console.log('in completeTask');
+      if($('#toggleStatus').val() === null) {
+        alert('Please select a status before continuing')
+      } else{
 
       var newStatus = {
         task_id: $(this).attr('data'),
@@ -93,6 +96,7 @@ var addTask = function () {
           getTasks();
           }//end success
         });//end ajax
+      }
     });//end completeTask
   };
 
