@@ -8,7 +8,19 @@ var tasks = [];
 $( document ).ready( function(){
   console.log( 'JQ is sourced');
 
+  $('body').on('click', '#toggleStatus', function(){
+    console.log('in completeTask');
+
+    var newStatus = {
+      status: $(this).attr('data')
+    };//end object
+    console.log(newStatus);
+  });
+
+
   getTasks();
+
+
 
 }); // end doc ready
 
@@ -36,7 +48,7 @@ var displayTasks = function (){
     } else {
       completed = 'FINISHED!!';
     }
-    allTasks += '<h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Task Status: ' + completed + '</p> <button id="toggleStatus" onclick="completeTask()" data=' + i + '>Complete Task</button> <button id="deleteTask">Delete Task</button> <hr>';
+    allTasks += '<h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Task Status: ' + completed + '</p> <button id="toggleStatus" data="' + i + '">Complete Task</button> <button id="deleteTask">Delete Task</button> <hr>';
     console.log(i);
   }
   $('#displayTasks').append(allTasks);
@@ -69,13 +81,16 @@ var addTask = function () {
 };//end addEmployee
 
 ////////////////////Function: Complete Task////////////////////////////////////
-var completeTask = function(){
+$('body').on('click', function(){
   console.log('in completeTask');
 
   var newStatus = {
-    status: $('#toggleStatus').val()
+    status: $(this).attr('data')
   };//end object
   console.log(newStatus);
+});
+
+
 
   //ajax call update completion status
   // $.ajax({
@@ -87,4 +102,4 @@ var completeTask = function(){
   //     getTasks();
   //     }//end success
   //   });//end ajax
-};//end completeTask
+// };//end completeTask
