@@ -8,19 +8,9 @@ var tasks = [];
 $( document ).ready( function(){
   console.log( 'JQ is sourced');
 
-  $('body').on('click', '#toggleStatus', function(){
-    console.log('in completeTask');
-
-    var newStatus = {
-      status: $(this).attr('data')
-    };//end object
-    console.log(newStatus);
-  });
-
-
+  statusUpdate();
+  deleteTasks();
   getTasks();
-
-
 
 }); // end doc ready
 
@@ -39,6 +29,8 @@ var getTasks = function(){
 
 ////////////////////Function: display everything//////////////////////////////
 var displayTasks = function (){
+
+
   var allTasks = '';
   var completed = '';
   console.log(tasks);
@@ -46,10 +38,10 @@ var displayTasks = function (){
     if(tasks[i].task_completed === false) {
       completed = 'Incomplete';
     } else {
-      completed = 'FINISHED!!';
+      completed = 'Complete!!';
     }
-    allTasks += '<h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Task Status: ' + completed + '</p> <button id="toggleStatus" data="' + i + '">Complete Task</button> <button id="deleteTask">Delete Task</button> <hr>';
-    console.log(i);
+    allTasks += '<h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Task Status: ' + completed + '</p> </select><select id="toggleStatus"> <option disabled selected>Change Status</option> <option value="true">Complete</option> <option value="false">Incomplete</option></select>  <button id="submitStatus" data=' + tasks[i].task_id + '>Submit</button> <br> <button id="deleteThisTask" data=' + tasks[i].task_id + '>Delete Task</button>';
+
   }
   $('#displayTasks').append(allTasks);
 
@@ -80,26 +72,47 @@ var addTask = function () {
     });//end ajax
 };//end addEmployee
 
-////////////////////Function: Complete Task////////////////////////////////////
-$('body').on('click', function(){
-  console.log('in completeTask');
+////////////////////Function: Change Task status////////////////////////////////
+  var statusUpdate = function(){
+    $('body').on('click', '#submitStatus', function(){
+      console.log('in completeTask');
 
-  var newStatus = {
-    status: $(this).attr('data')
-  };//end object
-  console.log(newStatus);
-});
+      var newStatus = {
+        task_id: $(this).attr('data'),
+        task_status: $('#toggleStatus').val()
+      };//end object
+      console.log(newStatus);
 
+      $.ajax({
+        url: '/changeStatus',
+        type: 'POST',
+        data: newStatus,
+        success: function (data) {
+          console.log('ajax gets back:', data);
+          getTasks();
+          }//end success
+        });//end ajax
+    });//end completeTask
+  };
 
+////////////////Function: Delete Tasks/////////////////////////////////////////
+  var deleteTasks = function(){
+    $('body').on('click', '#deleteThisTask', function(){
+      console.log('in deleteTask');
 
-  //ajax call update completion status
-  // $.ajax({
-  //   url: '/changeStatus',
-  //   type: 'POST',
-  //   data: newStatus,
-  //   success: function (data) {
-  //     console.log('ajax gets back:', data);
-  //     getTasks();
-  //     }//end success
-  //   });//end ajax
-// };//end completeTask
+      var deletedObject = {
+        deleteMe: $(this).attr('data'),
+      };//end object
+      console.log(deletedObject);
+
+      $.ajax({
+        url: '/delete',
+        type: 'POST',
+        data: deletedObject,
+        success: function (data) {
+          console.log('ajax gets back:', data);
+          getTasks();
+          }//end success
+        });//end ajax
+    });//end completeTask
+  };
