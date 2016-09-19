@@ -30,7 +30,6 @@ var getTasks = function(){
 ////////////////////Function: display everything//////////////////////////////
 var displayTasks = function (){
 
-
   var allTasks = '';
   var completed = '';
   console.log(tasks);
@@ -40,10 +39,10 @@ var displayTasks = function (){
     } else {
       completed = 'Complete!!';
     }
-    allTasks += '<h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Task Status: ' + completed + '</p> </select><select id="toggleStatus"> <option disabled selected>Change Status</option> <option value="true">Complete</option> <option value="false">Incomplete</option></select>  <button id="submitStatus" data=' + tasks[i].task_id + '>Submit</button> <br> <button id="deleteThisTask" data=' + tasks[i].task_id + '>Delete Task</button>';
+    allTasks += '<h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Task Status: ' + completed + '</p> </select><select id="toggleStatus"> <option disabled selected>Change Status</option> <option value="true">Complete</option> <option value="false">Incomplete</option></select>  <button id="submitStatus" data=' + tasks[i].task_id + '>Submit</button> <br> <button id="deleteThisTask" data=' + tasks[i].task_id + '>Delete Task</button><hr>';
 
   }
-  $('#displayTasks').append(allTasks);
+  $('#displayTasks').html(allTasks);
 
 };
 
@@ -89,6 +88,8 @@ var addTask = function () {
         data: newStatus,
         success: function (data) {
           console.log('ajax gets back:', data);
+          var updatedTasks = data;
+          console.log('updatedTasks:', updatedTasks);
           getTasks();
           }//end success
         });//end ajax
@@ -99,7 +100,11 @@ var addTask = function () {
   var deleteTasks = function(){
     $('body').on('click', '#deleteThisTask', function(){
       console.log('in deleteTask');
-
+      var test = confirm("Are you ABSOLUTELY CERTAIN you want to delete this task? It'll be gone forever, yo!");
+        if (test === false){
+          alert("Then it stays");
+        } else {
+          alert("Tis gone!");
       var deletedObject = {
         deleteMe: $(this).attr('data'),
       };//end object
@@ -114,5 +119,6 @@ var addTask = function () {
           getTasks();
           }//end success
         });//end ajax
+      }
     });//end completeTask
   };
