@@ -64,6 +64,7 @@ app.post('/newTaskFromClient', urlencodedParser, function (req, res) {
     }else {
       console.log('connected to Weekend_Challange_04 DB (newTaskFromClient)');
       client.query('INSERT INTO tasks(task_name, task_description, task_completed, task_start) VALUES($1, $2, $3, $4)', [taskName, taskDescription, taskCompleted, taskStart]);
+      done(); 
       res.send({success: true});
     }//end else
   });//end pg connect
