@@ -12,6 +12,8 @@ $( document ).ready( function(){
   deleteTasks();
   getTasks();
 
+
+
 }); // end doc ready
 
 ////////////////////Function: get all tasks already in DB///////////////////////
@@ -31,18 +33,20 @@ var getTasks = function(){
 var displayTasks = function (){
 
   var allTasks = '';
-  var completed = '';
+  // var completed;
   console.log(tasks);
   for (var i = 0; i < tasks.length; i++) {
     if(tasks[i].task_completed === false) {
       completed = 'Incomplete';
-    } else {
-      completed = 'Complete!!';
+    } else if(tasks[i].task_completed === true){
+      completed = 'Complete';
     }
-    allTasks += '<h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Current Status: ' + completed + '</p> </select><select id="toggleStatus"> <option disabled selected>Change Status</option> <option value="true">Complete</option> <option value="false">Incomplete</option></select>  <button id="submitStatus" data=' + tasks[i].task_id + '>Submit</button> <br> <button id="deleteThisTask" data=' + tasks[i].task_id + '>Delete Task</button><hr>';
-
+    allTasks += '<div class="taskColor' + completed + '"><h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Current Status: ' + completed + '</p> </select><select class="toggleStatus"> <option disabled selected>Change Status</option> <option value="true">Complete</option> <option value="false">Incomplete</option></select>  <button class="submitStatus" data=' + tasks[i].task_id + '>Submit</button> <br> <button class="deleteThisTask" data=' + tasks[i].task_id + '>Delete Task</button></div><hr>';
   }
+
   $('#displayTasks').html(allTasks);
+  $('.taskColorIncomplete').css("color", "red");
+  $('.taskColorComplete').css("color", "green");
 
 };
 
@@ -72,57 +76,57 @@ var addTask = function () {
 };//end addEmployee
 
 ////////////////////Function: Change Task status////////////////////////////////
-  var statusUpdate = function(){
-    $('body').on('click', '#submitStatus', function(){
-      console.log('in completeTask');
-      if($('#toggleStatus').val() === null) {
-        alert('Please select a status before continuing')
-      } else{
+var statusUpdate = function(){
+  $('body').on('click', '.submitStatus', function(){
+    console.log('in completeTask', $('.toggleStatus').val());
+    if($('.toggleStatus').val() === null) {
+      alert('Please select a status before continuing');
+    } else{
 
-      var newStatus = {
-        task_id: $(this).attr('data'),
-        task_status: $('#toggleStatus').val()
-      };//end object
-      console.log(newStatus);
+    var newStatus = {
+      task_id: $(this).attr('data'),
+      task_status: $('.toggleStatus').val()
+    };//end object
+    console.log(newStatus);
 
-      $.ajax({
-        url: '/changeStatus',
-        type: 'POST',
-        data: newStatus,
-        success: function (data) {
-          console.log('ajax gets back:', data);
-          var updatedTasks = data;
-          console.log('updatedTasks:', updatedTasks);
-          getTasks();
-          }//end success
-        });//end ajax
-      }
-    });//end completeTask
-  };
+    $.ajax({
+      url: '/changeStatus',
+      type: 'PUT',
+      data: newStatus,
+      success: function (data) {
+        console.log('ajax gets back:', data);
+        var updatedTasks = data;
+        console.log('updatedTasks:', updatedTasks);
+        getTasks();
+        }//end success
+      });//end ajax
+    }
+  });//end completeTask
+};
 
 ////////////////Function: Delete Tasks/////////////////////////////////////////
-  var deleteTasks = function(){
-    $('body').on('click', '#deleteThisTask', function(){
-      console.log('in deleteTask');
-      var test = confirm("Are you ABSOLUTELY CERTAIN you want to delete this task? It'll be gone forever, yo!");
-        if (test === false){
-          alert("Then it stays");
-        } else {
-          alert("Tis gone!");
-      var deletedObject = {
-        deleteMe: $(this).attr('data'),
-      };//end object
-      console.log(deletedObject);
+var deleteTasks = function(){
+  $('body').on('click', '.deleteThisTask', function(){
+    console.log('in deleteTask');
+    var test = confirm("Are you ABSOLUTELY CERTAIN you want to delete this task? It'll be gone forever, yo!");
+      if (test === false){
+        alert("Then it stays");
+      } else {
+        alert("Tis gone!");
+    var deletedObject = {
+      deleteMe: $(this).attr('data'),
+    };//end object
+    console.log(deletedObject);
 
-      $.ajax({
-        url: '/delete',
-        type: 'POST',
-        data: deletedObject,
-        success: function (data) {
-          console.log('ajax gets back:', data);
-          getTasks();
-          }//end success
-        });//end ajax
-      }
-    });//end completeTask
-  };
+    $.ajax({
+      url: '/delete',
+      type: 'POST',
+      data: deletedObject,
+      success: function (data) {
+        console.log('ajax gets back:', data);
+        getTasks();
+        }//end success
+      });//end ajax
+    }
+  });//end completeTask
+};

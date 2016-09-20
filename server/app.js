@@ -70,8 +70,8 @@ app.post('/newTaskFromClient', urlencodedParser, function (req, res) {
 });//end app.post
 
 ////////////////////Change Task status in DB//////////////////////////////
-app.post('/changeStatus', urlencodedParser, function (req, res) {
-  console.log('in .post changeStatus');
+app.put('/changeStatus', urlencodedParser, function (req, res) {
+  console.log('in .put changeStatus');
   console.log('req.body', req.body);
   //create variables from req
   var taskID = req.body.task_id;
@@ -85,6 +85,7 @@ app.post('/changeStatus', urlencodedParser, function (req, res) {
     }else {
       console.log('connect to Weekend_Challange_04 DB (changeStatus)');
       client.query('UPDATE tasks SET task_completed = $1 WHERE task_id = $2', [status ,taskID]);
+      done();
       res.send({success: true});
   }
   });
@@ -105,6 +106,7 @@ app.post('/delete', urlencodedParser, function (req, res) {
     }else {
       console.log('connect to Weekend_Challange_04 DB (delete)');
       client.query('DELETE FROM tasks WHERE task_id=($1)', [deleteTask]);
+      done();
       res.send({success: true});
   }
   });

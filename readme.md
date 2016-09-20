@@ -1,4 +1,4 @@
-JEN Stack Template
+Weekend_Challange_04
 ==================
 
-Basic template for JQuery, Node, Express.
+Set up a task list where the user can create tasks, edit completion statuses of each task, and delete tasks 
