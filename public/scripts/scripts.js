@@ -79,15 +79,17 @@ var addTask = function () {
 ////////////////////Function: Change Task status////////////////////////////////
 var statusUpdate = function(){
   var clicked = null;
+  var clickedId = null;
 
   $('body').on('change', '.toggleStatus', function(){
-    console.log('toggleStatus:', $(this).val() );
+    console.log('toggleStatus:', $(this).val(), $(this).attr('data') );
     clicked = $(this).val();
+    clickedId = $(this).attr('data');
   });
 
   $('body').on('click', '.submitStatus', function(){
     console.log('in completeTask', clicked);
-    if(clicked === null) {
+    if(clicked === null || clickedId != $(this).attr('data')) {
       alert('Please select a status before continuing');
     } else{
 
@@ -110,6 +112,7 @@ var statusUpdate = function(){
       });//end ajax
     }
   });//end completeTask
+  $('#toggleStatus').val('');
 };
 
 ////////////////Function: Delete Tasks/////////////////////////////////////////
