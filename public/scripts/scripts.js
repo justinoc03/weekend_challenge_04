@@ -4,6 +4,7 @@ console.log( 'JS is sourced' );
 var tasks = [];
 
 
+
 ////////////////////document ready functions////////////////////////////////////
 $( document ).ready( function(){
   console.log( 'JQ is sourced');
@@ -41,7 +42,7 @@ var displayTasks = function (){
     } else if(tasks[i].task_completed === true){
       completed = 'Complete';
     }
-    allTasks += '<div class="taskColor' + completed + '"><h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Current Status: ' + completed + '</p> </select><select class="toggleStatus"> <option disabled selected>Change Status</option> <option value="true">Complete</option> <option value="false">Incomplete</option></select>  <button class="submitStatus" data=' + tasks[i].task_id + '>Submit</button> <br> <button class="deleteThisTask" data=' + tasks[i].task_id + '>Delete Task</button></div><hr>';
+    allTasks += '<div class="taskColor' + completed + '"><h4>Task: ' + tasks[i].task_name + '</h4><p>Task Description: ' + tasks[i].task_description + '</p><p>Start Date: ' + tasks[i].date.substring(0,10) + ' at ' + tasks[i].task_start + '</p><p>Current Status: ' + completed + '</p> <select class="toggleStatus" data="' + tasks[i].task_id + '"> <option disabled selected>Change Status</option> <option value="true">Complete</option> <option value="false">Incomplete</option></select>  <button class="submitStatus" data="' + tasks[i].task_id + '">Submit</button> <br> <button class="deleteThisTask" data=' + tasks[i].task_id + '>Delete Task</button></div><hr>';
   }
 
   $('#displayTasks').html(allTasks);
@@ -77,17 +78,24 @@ var addTask = function () {
 
 ////////////////////Function: Change Task status////////////////////////////////
 var statusUpdate = function(){
+  var clicked = null;
+
+  $('body').on('change', '.toggleStatus', function(){
+    console.log('toggleStatus:', $(this).val() );
+    clicked = $(this).val();
+  });
+
   $('body').on('click', '.submitStatus', function(){
-    console.log('in completeTask', $('.toggleStatus').val());
-    if($('.toggleStatus').val() === null) {
+    console.log('in completeTask', clicked);
+    if(clicked === null) {
       alert('Please select a status before continuing');
     } else{
 
     var newStatus = {
       task_id: $(this).attr('data'),
-      task_status: $('.toggleStatus').val()
+      task_status: clicked
     };//end object
-    console.log(newStatus);
+    console.log("newStatus:", newStatus);
 
     $.ajax({
       url: '/changeStatus',
